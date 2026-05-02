@@ -1,0 +1,7 @@
+.env
+site/config.js
+node_modules/
+.DS_Store
+.vercel/
+.vscode/
+dist/
