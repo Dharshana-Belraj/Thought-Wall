@@ -64,6 +64,7 @@
         <span class="topbar-count" id="topbar-count">0 poems</span>
       </div>
       <div class="topbar-right">
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" onclick="toggleMobileMenu()">☰</button>
         <input type="text" class="search-box" id="search-input" placeholder="Search poems..." oninput="onSearch(this.value)">
         <div class="icon-btn" id="test-db-btn" title="Test DB" onclick="testSupabase()">DB</div>
         <div class="icon-btn active" id="grid-btn" title="Grid view" onclick="toggleLayout('grid')">
@@ -168,6 +169,10 @@
 
 <!-- Toast -->
 <div class="toast hidden" id="toast"></div>
+<!-- Mobile new-poem button -->
+<button class="mobile-write-btn" aria-label="Write new poem" onclick="openEditor()">+</button>
+<!-- Mobile sidebar backdrop -->
+<div class="mobile-backdrop" id="mobile-backdrop" onclick="toggleMobileMenu(false)"></div>
 
 <script src="./app.js" defer></script>
 </body>

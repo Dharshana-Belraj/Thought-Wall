@@ -173,3 +173,49 @@ body { background: var(--bg); color: var(--text); font-family: var(--font-body);
 .daily-icon { font-family: var(--font-display); font-size: 22px; font-style: italic; color: var(--purple); flex-shrink: 0; }
 .daily-text p:first-child { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--purple); margin-bottom: 2px; }
 .daily-text p:last-child { font-size: 13px; color: var(--text2); font-family: var(--font-display); font-style: italic; }
+
+/* Mobile / Responsive tweaks */
+.mobile-write-btn { display: none; position: fixed; right: 20px; bottom: 20px; z-index: 1100; background: var(--accent); color: #0e0d0b; border: none; border-radius: 50%; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 6px 18px rgba(0,0,0,0.4); cursor: pointer; }
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .topbar { padding: 0 16px; }
+  .search-box { width: 140px; }
+  .content { padding: 16px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .poem-grid { grid-template-columns: 1fr; gap: 12px; }
+  .featured { padding: 16px; }
+  .editor-modal { width: calc(100% - 32px); max-width: none; max-height: calc(100vh - 32px); border-radius: 10px; }
+  .editor-modal.fullscreen { position: fixed; inset: 0; border-radius: 0; }
+  .mobile-write-btn { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .search-box { width: 100%; max-width: 220px; }
+  .topbar-left { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .stats-row { grid-template-columns: 1fr; }
+  .poem-grid { grid-template-columns: 1fr; gap: 10px; }
+  .editor-body { padding: 12px; }
+  .title-input { font-size: 18px; }
+  .poem-textarea { min-height: 320px; }
+  .mobile-write-btn { right: 14px; bottom: 14px; width: 56px; height: 56px; font-size: 28px; }
+}
+
+/* Mobile sidebar (slide-in) */
+.mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text2); width: 36px; height: 36px; border-radius: 8px; }
+.mobile-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 105; }
+.sidebar.mobile-open { display: block; position: fixed; left: 0; top: 0; bottom: 0; width: 260px; max-width: 80vw; z-index: 110; transform: translateX(-10%); background: var(--bg2); box-shadow: 6px 0 30px rgba(0,0,0,0.6); overflow-y: auto; transition: transform 260ms ease; }
+.sidebar.mobile-open.show { transform: translateX(0); }
+
+@media (max-width: 900px) {
+  .mobile-menu-btn { display: inline-flex; }
+  .mobile-backdrop.show { display: block; }
+}
+
+/* Editor transition tweaks */
+.editor-modal { transition: transform 220ms ease, width 220ms ease, height 220ms ease, border-radius 220ms ease, opacity 200ms ease; }
+.editor-modal.fullscreen { animation: none; transform: none; }
+
+/* Prevent background scroll when editor fullscreen */
+body.no-scroll { overflow: hidden; touch-action: none; }

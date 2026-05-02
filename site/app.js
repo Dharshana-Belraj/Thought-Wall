@@ -194,6 +194,10 @@ function openEditor(id) {
   if (editorModal) {
     if (!editingId) editorModal.classList.add('fullscreen'); else editorModal.classList.remove('fullscreen');
   }
+  // prevent background scrolling on fullscreen editor
+  if (document.querySelector('.editor-modal.fullscreen')) document.body.classList.add('no-scroll');
+  // close mobile sidebar if open
+  if (document.body.classList.contains('mobile-sidebar-open')) toggleMobileMenu(false);
   if (editingId) {
     const p = poems.find(x => x.id === editingId);
     document.getElementById('poem-title-input').value = p.title || '';
@@ -212,7 +216,13 @@ function openEditor(id) {
   setTimeout(() => document.getElementById('poem-title-input').focus(), 100);
 }
 
-function closeEditor() { document.getElementById('editor-overlay').classList.add('hidden'); editingId = null; const editorModal = document.querySelector('.editor-modal'); if (editorModal) editorModal.classList.remove('fullscreen'); }
+function closeEditor() {
+  document.getElementById('editor-overlay').classList.add('hidden');
+  editingId = null;
+  const editorModal = document.querySelector('.editor-modal');
+  if (editorModal) editorModal.classList.remove('fullscreen');
+  document.body.classList.remove('no-scroll');
+}
 function updatePoemStats() { const body = document.getElementById('poem-body-input').value; const wc = wordCount(body); const lc = lineCount(body); document.getElementById('poem-stats-bar').innerHTML = `<span>${wc} word${wc !== 1 ? 's' : ''}</span><span>${lc} line${lc !== 1 ? 's' : ''}</span>`; }
 
 async function savePoem() {
@@ -264,6 +274,25 @@ function openView(id) {
 }
 
 function closeView() { document.getElementById('view-overlay').classList.add('hidden'); viewingPoem = null; }
+
+function toggleMobileMenu(force) {
+  const shouldOpen = typeof force === 'boolean' ? force : !document.body.classList.contains('mobile-sidebar-open');
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.getElementById('mobile-backdrop');
+  if (!sidebar) return;
+  if (shouldOpen) {
+    document.body.classList.add('mobile-sidebar-open');
+    sidebar.classList.add('mobile-open');
+    // force a reflow then show for transition
+    setTimeout(() => sidebar.classList.add('show'), 10);
+    if (backdrop) backdrop.classList.add('show');
+  } else {
+    document.body.classList.remove('mobile-sidebar-open');
+    sidebar.classList.remove('show');
+    if (backdrop) backdrop.classList.remove('show');
+    setTimeout(() => sidebar.classList.remove('mobile-open'), 260);
+  }
+}
 
 async function toggleFavFromView() { if (!viewingPoem) return; await toggleFav(viewingPoem.id); viewingPoem = poems.find(p => p.id === viewingPoem.id); document.getElementById('fav-view-btn').textContent = viewingPoem.favourite ? '★' : '☆'; }
 function editFromView() { const id = viewingPoem ? viewingPoem.id : null; closeView(); if (id) openEditor(id); }
